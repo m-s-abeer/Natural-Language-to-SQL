@@ -1,4 +1,3 @@
-CC Coordinating conjunction
 CD Cardinal number
 FW Foreign word
 NN Noun, singular or mass
