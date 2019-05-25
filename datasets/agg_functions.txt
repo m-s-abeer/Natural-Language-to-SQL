@@ -1,0 +1,8 @@
+minimum MIN
+min MIN
+maximum MAX
+max MAX
+count COUNT
+average AVG
+avg AVG
+sum SUM

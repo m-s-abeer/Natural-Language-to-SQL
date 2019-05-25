@@ -1,0 +1,8 @@
+CC Coordinating conjunction
+CD Cardinal number
+FW Foreign word
+NN Noun, singular or mass
+NNS Noun, plural
+NNP Proper noun, singular
+NNPS Proper noun, plural
+PRP$ Possessive pronoun
