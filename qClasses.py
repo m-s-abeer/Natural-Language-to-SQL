@@ -52,6 +52,8 @@ class qWord:
         return len(self.aggr)!=0
 
     def isPossibleData(self):
+        if(self.isPossibleAggregate()):
+            return 0
         dataTags = open(os.path.join(datasets, "data_tags.txt"), "r", encoding="utf-8")
 
         for line in dataTags:
@@ -100,7 +102,7 @@ class qWord:
         return op
 
     def isPossibleStopWord(self, word):
-        return self.isPossibleData()!=0 and self.isPossibleColumn()!=0 and self.isPossibleAggregate()!=0
+        return self.isPossibleData()==0 and self.isPossibleColumn()==0 and self.isPossibleAggregate()==0
 
 
     def getRecMatches(self, word):

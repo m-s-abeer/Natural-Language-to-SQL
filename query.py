@@ -14,7 +14,9 @@ props = {
 }
 
 # nlq=str(input())
-nlq = "participant and id from cse department and section A"
+nlq = "max solve from department of cse and section A"
+# nlq = "max in solve"
+
 
 analysis = json.loads(nlp.annotate(nlq, properties=props))
 allanalysis = analysis['sentences'][0]
@@ -42,6 +44,8 @@ for it in range(lim):
 # for w in words:
 #     print(w)
 
+# print("{} {} {}".format(words[1].isPossibleData(), words[1].isPossibleAggregate(), words[1].isPossibleColumn()))
+
 # Graph Conversion
 G = wordGraph(lim)
 
@@ -61,9 +65,11 @@ vis = {}
 
 # remove unused 0 degree stopwords
 def removeStopWords(u):
+    # print("trying to remove {} {} {} {}".format(u, vis.get(u, 0)==0, words[u].stop_word, G.outdeg[u]==0))
     now = u
     while(now!=-1 and vis.get(u, 0)==0 and words[now].stop_word and G.outdeg[now]==0):
         vis[u]=1
+        # print("visiting %d" %u)
         par = G.P[now][-1]
         G.outdeg[par]-=1
         print("marking {} as stopword and outDeg[{}]={}".format(now, par, G.outdeg[par]))
@@ -77,9 +83,9 @@ def isCondition(u, val=0):
         return 1
     print("now at {} {} {}".format(u, words[u].words[-1], words[u].pos_tag))
     par = G.P[u][-1]
-    if(par==u):
-        print("whaaaaaaaaaaaaaaaaaaaaaaat?")
-        return 0
+    # if(par==u):
+    #     print("whaaaaaaaaaaaaaaaaaaaaaaat?")
+    #     return 0
     if(words[u].isPossibleColumn()):
         if(vis.get(u, 0)==0 and (val&1) == 0):
             print("Column found")
@@ -166,13 +172,14 @@ def markSelection(u, val=0):
 
 
 for u in reversed(range(G.sz)):
-    removeStopWords(u)
+    if(G.outdeg[u] == 0 and words[u].stop_word):
+        removeStopWords(u)
 
 #adding selection clauses, including aggreate function if found
 print("Finding selection clauses")
 for u in reversed(range(G.sz)):
     if(G.outdeg[u] == 0):
-        print("Possible selection clause {} ")
+        # print("Possible selection clause %d %d %d %d" %(u, words[u].isPossibleAggregate(), words[u].isPossibleColumn(), vis.get(u, 0)) )
         if((words[u].isPossibleAggregate() or words[u].isPossibleColumn()) and vis.get(u, 0)==0):
             print("Selection found at {}".format(u))
             sele = markSelection(u)
