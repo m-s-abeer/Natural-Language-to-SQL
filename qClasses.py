@@ -29,7 +29,7 @@ class qWord:
         self.stop_word = self.isPossibleStopWord(word)
         self.possible_rec_cols = self.getRecMatches(word)
 
-        print("New object created!")
+        print("New qWord created!")
         # print(self)
 
     def __str__(self):
@@ -118,7 +118,7 @@ class Condition:
 
     def __init__(self, cond_id=-1, col_id=-1, operat="=", condition=""):
         self.cond_id = cond_id
-        self.col_id = col_id
+        self.col_id = int(col_id)
         self.operator = operat
         self.condition = condition
 
@@ -147,18 +147,53 @@ class Column:
 '''
 '''
 class Sql:
-    selections = list()
-    conditions = list()
+    selections = list() # selections is a list of pairs where each pair holds [column_id(int), aggregate_function_name(str)]
+    conditions = list() # condition is an object defined above and holds col_id(int), operator(str), condition(str)
+    columns = list() # list of columnNames
 
     def __init__(self):
         self.selections = list()
         self.conditions = list()
+        self.columns = list()
 
     def addCondition(self, cond):
         self.conditions.append(cond)
     
     def addSelection(self, sel):
         self.selections.append(sel)
+    
+    def getFinalQuery(self, table_name):
+        res = str()
+        res += "SELECT"
+        if self.selections:
+            sel = self.selections[0]
+            print(sel[1], type(sel[1]), sel[0], type(sel[1]))
+            res += " "
+            res += sel[1]
+            res += "("
+            res += self.columns[sel[0]]
+            res += ")"
+        else:
+            res += " *"
+
+        res += " FROM " + table_name
+
+        if self.conditions:
+            res += " WHERE "
+            frst = int(1)
+            for cond in self.conditions:
+                if(frst):
+                    frst = int(0)
+                else:
+                    res += " AND "
+                res += self.columns[cond.col_id]
+                res += cond.operator
+                res += "(\""
+                res += cond.condition
+                res += "\")"
+        
+        res += ";"
+        return res
 
 
 '''
