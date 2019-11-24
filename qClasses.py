@@ -58,7 +58,7 @@ class qWord:
 
         for line in dataTags:
             words = line.split()
-            if (words[0] == self.pos_tag): # or name == self.lemma
+            if (words[0].lower() == self.pos_tag.lower()): # or name == self.lemma
                 return True
 
         return False
@@ -72,7 +72,7 @@ class qWord:
 
         for line in colFile:
             name, it = line.split()
-            if (name == word): # or name == self.lemma
+            if (name.lower() == word.lower()): # or name == self.lemma
                 col_mat.append(int(it))
 
         return col_mat
@@ -84,7 +84,7 @@ class qWord:
 
         for line in aggFile:
             name, it = line.split()
-            if (name == word): # or name == self.lemma
+            if (name.lower() == word.lower()): # or name == self.lemma
                 agg = it
 
         return agg
@@ -96,7 +96,7 @@ class qWord:
 
         for line in opFile:
             name, it = line.split()
-            if (name == word): # or name == self.lemma
+            if (name.lower() == word.lower()): # or name == self.lemma
                 op = it
 
         return op

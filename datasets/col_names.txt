@@ -1,3 +1,7 @@
 department 0
-section 1
-solve 2
+solve 1
+section 2
+phone 3
+number 3
+id 4
+name 5
