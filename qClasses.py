@@ -1,6 +1,6 @@
 from collections import defaultdict
 import os
-datasets = os.path.abspath("datasets")
+datasets = os.path.join(os.path.dirname(__file__), "datasets")
 
 '''
 '''
@@ -166,13 +166,19 @@ class Sql:
         res = str()
         res += "SELECT"
         if self.selections:
-            sel = self.selections[0]
-            print(sel[1], type(sel[1]), sel[0], type(sel[1]))
-            res += " "
-            res += sel[1]
-            res += "("
-            res += self.columns[sel[0]]
-            res += ")"
+            frst = int(1)
+            for sel in self.selections:
+                if(frst):
+                    frst = int(0)
+                else:
+                    res += ", "
+                print(sel[1], type(sel[1]), sel[0], type(sel[1]))
+                res += " "
+                if(sel[1]): res += sel[1]
+                if(sel[1]): res += "("
+                if(sel[0]>=0): res += self.columns[sel[0]].replace(' ', '_')
+                else: res += "*"
+                if(sel[1]): res += ")"
         else:
             res += " *"
 
@@ -186,7 +192,7 @@ class Sql:
                     frst = int(0)
                 else:
                     res += " AND "
-                res += self.columns[cond.col_id]
+                res += self.columns[cond.col_id].replace(' ', '_')
                 res += cond.operator
                 res += "(\""
                 res += cond.condition
